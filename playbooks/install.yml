@@ -25,17 +25,17 @@
         path: /etc/selinux/config
         regexp: '^SELINUX='
         line: SELINUX=disabled
-    - name: auto.master
+    - name: edit auto.master
       ansible.builtin.lineinfile:
         path: /etc/auto.master
         regexp: '^\+auto\.master'
         line: "#+auto.master"
-    - name: auto.master
+    - name: add auto.u auto.master
       ansible.builtin.lineinfile:
         path: /etc/auto.master
         line: "/u /etc/auto.u"
         create: yes
-    - name: auto.u
+    - name: fill in auto.u
       ansible.builtin.blockinfile:
         path: /etc/auto.u
         create: yes
@@ -50,3 +50,15 @@
           muenchp  it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/muenchp   #Peter Muench - zlinux (Jun 2023)
           saliu    it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/saliu     #Sa Liu - zlinux (Jun 2023)
           stenzel  it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/stenzel   #Gerhard Stenzel (Jun 2023)
+    - name: Restart autofs
+      ansible.builtin.service:
+        name: autofs
+        state: restarted
+    - name: Enable service autofs
+      ansible.builtin.service:
+        name: autofs
+        enabled: yes
+    - name: Stop service firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
