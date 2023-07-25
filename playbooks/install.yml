@@ -20,3 +20,33 @@
          - python3-pip
          - autofs
          - vim
+    - name: Ensure SELinux is set to disabled mode
+      ansible.builtin.lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: SELINUX=disabled
+    - name: auto.master
+      ansible.builtin.lineinfile:
+        path: /etc/auto.master
+        regexp: '^\+auto\.master'
+        line: "#+auto.master"
+    - name: auto.master
+      ansible.builtin.lineinfile:
+        path: /etc/auto.master
+        line: "/u /etc/auto.u"
+        create: yes
+    - name: auto.u
+      ansible.builtin.blockinfile:
+        path: /etc/auto.u
+        create: yes
+        block: |
+          gpfstest it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/gpfstest
+          images it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/images
+          admin it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/admin
+          DUMPS it2n01.pok.stglabs.ibm.com:/gpfs/fs3/DUMPS
+          alina    it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/alina     #Alina Glodowski - zlinux (Jun 2023)
+          cmay     it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/cmay      #Christian May - zlinux (Jun 2023)
+          de171948 it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/de171948  #Konstantin Maksimov - zlinux (Jun 2023)
+          muenchp  it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/muenchp   #Peter Muench - zlinux (Jun 2023)
+          saliu    it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/saliu     #Sa Liu - zlinux (Jun 2023)
+          stenzel  it2n01.pok.stglabs.ibm.com:/gpfs/fs1/u/stenzel   #Gerhard Stenzel (Jun 2023)
